@@ -1,30 +1,19 @@
 import { WebSocketServer, WebSocket, RawData } from 'ws';
-import uuid from './uuid';
+import { uuid } from './uuid';
+import { validateCommand, formatAsCommand } from './command';
 
-type CommandName = 'create' | 'connect';
-type Command = [CommandName, string];
+import type { CommandName, Command } from './command';
 
 const waitingRoom = new Map<string, WebSocket>();
 const wss = new WebSocketServer({ port: 8080 });
 
-const validCommands = ['create', 'connect'];
-
-const isCommandValid = (data: string[]): data is Command =>
-  validCommands.includes(data[0]);
-
 const cleanup = (id: string) => waitingRoom.delete(id);
 
-const handleClose = (
-  reason: string,
-  ...clients: [WebSocket, ...WebSocket[]]
-) => {
+const handleClose = (reason: string, ...clients: [WebSocket, ...WebSocket[]]) => {
   clients.forEach((ws) => ws.close(1000, reason));
 };
 
-const commandResolvers: Record<
-  CommandName,
-  (ws: WebSocket, command: Command) => void
-> = {
+const commandResolvers: Record<CommandName, (ws: WebSocket, command: Command) => void> = {
   create: (ws) => {
     const id = uuid();
     waitingRoom.set(id, ws);
@@ -59,13 +48,13 @@ const handleConnection = (ws: WebSocket) => {
   const handleMessage = (rawData: RawData) => {
     clearTimeout(timerId);
 
-    const command = rawData.toString().split(' ');
+    const someCommand = formatAsCommand(rawData);
 
-    if (isCommandValid(command)) {
-      const [commandName] = command;
-      commandResolvers[commandName](ws, command);
+    if (validateCommand(someCommand)) {
+      const [commandName] = someCommand;
+      commandResolvers[commandName](ws, someCommand);
     } else {
-      handleClose('Unknown command', ws);
+      handleClose('Unknown or incorrect command', ws);
     }
   };
 
