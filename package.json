@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/evgeny-rov/kinda-p2p#readme",
   "dependencies": {
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1",
     "ws": "^8.5.0"
   },
   "devDependencies": {
