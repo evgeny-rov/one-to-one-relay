@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/api.js",
   "scripts": {
-    "dev": "nodemon ./src/api.ts",
+    "dev": "nodemon --exec npx ts-node ./src/api.ts",
     "start": "node ./dist/api.js",
     "build": "tsc --project ./",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.4",
     "nodemon": "^2.0.15",
-    "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
   }
 }
