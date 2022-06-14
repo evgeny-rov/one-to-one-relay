@@ -12,8 +12,10 @@ const closeMessagesByCode = {
   4005: 'Unable to create new session',
 } as const;
 
+const PORT = Number(process.env.PORT ?? 3000);
+
 const waitingRoom = new Map<string, WebSocket>();
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: PORT });
 
 const getUnusedSessionId = (retries = 100): string | null => {
   if (retries <= 0) {
