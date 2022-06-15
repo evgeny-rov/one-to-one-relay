@@ -17,6 +17,14 @@ const PORT = Number(process.env.PORT ?? 3000);
 const waitingRoom = new Map<string, WebSocket>();
 const wss = new WebSocketServer({ port: PORT });
 
+const keepAlive = (ws: WebSocket) => {
+  const PING_INTERVAL = 30000;
+  const intervalId: NodeJS.Timer = setInterval(
+    () => ws.ping('', false, (er) => er && clearInterval(intervalId)),
+    PING_INTERVAL
+  );
+};
+
 const getUnusedSessionId = (retries = 100): string | null => {
   if (retries <= 0) {
     return null;
@@ -48,6 +56,7 @@ const commandResolvers: Record<CommandName, (ws: WebSocket, command: Command) =>
       waitingRoom.set(id, ws);
       ws.onclose = () => clearSessionId(id);
       ws.send(`created ${id}`);
+      keepAlive(ws);
     } else {
       handleClose(4005, ws);
     }
@@ -58,6 +67,7 @@ const commandResolvers: Record<CommandName, (ws: WebSocket, command: Command) =>
 
     if (peer) {
       clearSessionId(id);
+      keepAlive(ws);
       const peers = [ws, peer];
 
       peers.forEach((p, idx, arr) => {
@@ -74,12 +84,7 @@ const commandResolvers: Record<CommandName, (ws: WebSocket, command: Command) =>
 };
 
 const handleConnection = (ws: WebSocket) => {
-  const TIMEOUT_AFTER = 30000;
-  const timerId = setTimeout(() => handleClose(4001, ws), TIMEOUT_AFTER);
-
-  const handleMessage = (rawData: RawData) => {
-    clearTimeout(timerId);
-
+  ws.once('message', (rawData) => {
     const someCommand = formatAsCommand(rawData);
 
     if (validateCommand(someCommand)) {
@@ -88,9 +93,7 @@ const handleConnection = (ws: WebSocket) => {
     } else {
       handleClose(4002, ws);
     }
-  };
-
-  ws.once('message', handleMessage);
+  });
 };
 
 wss.on('connection', handleConnection);
