@@ -1,5 +1,5 @@
 {
-  "name": "kinda-p2p",
+  "name": "one-to-one-relay",
   "version": "1.0.0",
   "description": "",
   "main": "./src/api.js",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evgeny-rov/kinda-p2p.git"
+    "url": "git+https://github.com/evgeny-rov/one-to-one-relay.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/evgeny-rov/kinda-p2p/issues"
+    "url": "https://github.com/evgeny-rov/one-to-one-relay/issues"
   },
-  "homepage": "https://github.com/evgeny-rov/kinda-p2p#readme",
+  "homepage": "https://github.com/evgeny-rov/one-to-one-relay#readme",
   "dependencies": {
     "ws": "^8.5.0"
   },

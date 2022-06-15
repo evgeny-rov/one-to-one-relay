@@ -1,1 +1,1 @@
-# kinda-p2p
+# one-to-one-relay
