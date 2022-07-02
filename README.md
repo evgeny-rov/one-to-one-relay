@@ -1,6 +1,6 @@
 # One To One Relay
 
-**1t1 Relay** is a WebSocket Server that allows two clients to establish P2P-like anonymous communication sessions.
+**1t1 Relay** is a Node.js WebSocket Server that allows two clients to establish P2P-like anonymous communication sessions.
 
 ## Client-Server Commands
 
