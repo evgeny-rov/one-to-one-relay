@@ -22,5 +22,5 @@ Once the connection is established, the following commands(sent as messages) can
 | 4005 | Unable to create new session |
 
 ## Spin your own
-  * Developing - Clone repo, install dependencies, run - `npm run dev`
-  * Production - Clone repo, install dependencies, run - `npm run build && npm run start`
+  * Developing - clone repo, install dependencies, run - `npm run dev`
+  * Production - clone repo, install dependencies, run - `npm run build && npm run start`
